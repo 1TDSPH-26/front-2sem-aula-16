@@ -9,7 +9,7 @@ export default function Produtos(){
     useEffect( () => {
         const carregaProdutos = async ()=>{
             try{
-                const resposta = await fetch("http://localhost:3001/produtos");
+                const resposta = await fetch("http://localhost:5173/produtos");
 
                 if (!resposta.ok){
                     throw new Error("Erro na listagem dos produtos!");
@@ -17,7 +17,7 @@ export default function Produtos(){
 
                 const data:TipoProduto[] = await resposta.json();
 
-                console.log(data);
+                setProdutos(data);
             } catch (error){
                 console.error(error);
             }
@@ -30,6 +30,35 @@ export default function Produtos(){
     return(
         <main>
             <h2>Produtos</h2>
+            <div>
+                <table border={1} style={{borderCollapse:"collapse"}}>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NOME</th>
+                            <th>PREÇO</th>
+                            <th>ESTOQUE</th>
+                            <th>AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {produtos.map( ( produto )=>(
+                            <tr key={produto.id}>
+                                <td>{produto.id}</td>
+                                <td>{produto.nome}</td>
+                                <td>{produto.preco}</td>
+                                <td>{produto.estoque}</td>
+                                <td>EDITAR/EXCLUIR</td>
+                            </tr>
+                        ) )}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colSpan={5}>Quantidade de produtos: {produtos.length}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </main>
     )
 }
