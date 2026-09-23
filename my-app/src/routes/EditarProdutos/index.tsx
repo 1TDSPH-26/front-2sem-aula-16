@@ -10,6 +10,7 @@ const listaProdutos = [
 
 export default function EditarProdutos() {
   document.title = "Editar Produtos";
+  
 
   const { id } = useParams<{id:string}>();
 
@@ -40,5 +41,6 @@ export default function EditarProdutos() {
         </div>
 
     </main>
-  )
+  );
+  
 }
