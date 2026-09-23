@@ -1,85 +1,79 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
-export default function Home() {
-  document.title = "Home";
+export default function Home(){
+    document.title = "Home";
 
-  const [clicado, setClicado] = useState<number>(0);
+    const navigate = useNavigate();
 
-  let chamadas: number = 0;
+    const[clicado, setClicado] = useState<number>(0);
 
-  useEffect(() => {
-    console.log("Um milhão de linhas sendo carregadas:", chamadas);
-    chamadas++;
-  }, [clicado]);
+    let chamadas : number = 0;
 
-  type TipoUsuarioGit = {
-    login: string;
-    id: number;
-    node_id: string;
-    avatar_url: string;
-    gravatar_id: string;
-    url: string;
-    html_url: string;
-    followers_url: string;
-    following_url: string;
-    gists_url: string;
-    starred_url: string;
-    subscriptions_url: string;
-    organizations_url: string;
-    repos_url: string;
-    events_url: string;
-    received_events_url: string;
-    type: string;
-    user_view_type: string;
-    site_admin: boolean;
-  };
+    useEffect(() => {
+        console.log("Um milhão de linhas sendo carregadas: ", chamadas);
+        chamadas++;
+    }, [clicado]);
 
-  const [usuarios, setUsuarios] = useState<TipoUsuarioGit[]>([]);
+    type TipoUsuarioGit = {
+        "login": string;
+        "id": number;
+        "node_id": string;
+        "avatar_url": string;
+        "gravatar_id": string;
+        "url": string;
+        "html_url": string;
+        "followers_url": string;
+        "following_url": string;
+        "gists_url": string;
+        "starred_url": string;
+        "subscriptions_url": string;
+        "organizations_url": string;
+        "repos_url": string;
+        "events_url": string;
+        "received_events_url": string;
+        "type": string;
+        "user_view_type": string;
+        "site_admin": boolean
+    }
+    
+    const[usuarios, setUsuarios] = useState<TipoUsuarioGit[]>([]);
 
- useEffect(()=>{
+    useEffect(() => {
+        async function loadingData(){
+            try{
+                const response = await fetch("https://api.github.com/users");
+                if(!response.ok){
+                    throw new Error("A listagem dos usuários falhou");
+                }
 
-  async function loadingData() {
-    try{
-      const response = await fetch("https://api.github.com/users");
-      
-      if(!response.ok){
-          throw new Error("A listagem dos usuários falhou!");
+                const data:TipoUsuarioGit[] = await response.json();
+
+                setUsuarios(data);
+            } catch(error){
+                console.log(error);
+                navigate("/erro/usuarios-nao-encontrados");
+            }
         }
 
-        const data:TipoUsuarioGit[] = await response.json();
+        loadingData();
 
-        setUsuarios(data);
+    }, [])
 
-    }catch(error){
-      console.log(error);
-    }
-  }
-
-  // loadingData();
-
- },[]);
-
-
-  return (
-    <main>
-      <h2>Home</h2>
-      <div>
-        <p>Valor do STATE : {clicado}</p>
-        <button onClick={() => setClicado(clicado + 1)}>
-          ALTERAR VALOR = {clicado}
-        </button>
-      </div>
-      <div>
-        <ul>
-          {usuarios.map( (u,indice)=>(
-            <li key={indice}>{u.id} - {u.login} - 
-            
-              <a href={u.html_url} target="_blank"><img src={u.avatar_url} alt={u.login} width={40} /></a>
-            
-            </li>
-          ))}
-        </ul>
-      </div>
-    </main>
-  );
+    return(
+        <main>
+            <h2>Home</h2>
+            <div>
+                <p>Valor do STATE : {clicado}</p>
+                <button onClick={() => setClicado(clicado + 1)}>ALTERAR VALOR = {clicado}</button>
+            </div>
+            <div>
+                <ul>
+                    {usuarios.map( (u, indice) => (
+                        <li key={indice}>{u.id} - {u.login}</li>
+                    ) )}
+                </ul>
+            </div>
+        </main>
+    )
 }

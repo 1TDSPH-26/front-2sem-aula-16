@@ -1,10 +1,12 @@
 import Menu from "../Menu/Menu";
 
-export default function Cabecalho() {
-  return (
-    <header>
-        <h1>Meu Boiler Plate</h1>
-        <Menu/>
-    </header>
-  )
+export default function Cabecalho(){
+    return(
+        <header>
+            <h1>Meu Boiler Plate</h1>
+            <div>
+                <Menu/>
+            </div>
+        </header>
+    );
 }
