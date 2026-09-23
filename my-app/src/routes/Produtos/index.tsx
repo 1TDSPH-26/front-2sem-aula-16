@@ -51,7 +51,7 @@ export default function Produtos() {
                   <td>{produto.nome}</td>
                   <td>{produto.preco}</td>
                   <td>{produto.estoque}</td>
-                  <td>EDITAR/EXCLUIR</td>
+                  <td>EDITAR/<button>Excluir</button></td>
                 </tr>
               ))}
 
